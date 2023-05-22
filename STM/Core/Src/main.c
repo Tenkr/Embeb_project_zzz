@@ -179,7 +179,7 @@ int main(void)
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
-	  char buffer[50];
+	  char buffer[90];
 	  HAL_ADC_Start(&hadc1);
 
 
@@ -206,7 +206,16 @@ int main(void)
 
 	  	  temp = t_byte1;
 	  	  humid = h_byte1;
-	  	  sprintf(buffer, "soi : %.1f temp : %.1f humid : %.1f \r\n",ADCpercent,temp,humid);
+
+	  	  // LDR
+	  	//HAL_ADC_Start(&hadc1);
+	  	 int adcval = 0;
+	  	 if(HAL_ADC_PollForConversion(&hadc1,1000)==HAL_OK){
+	  		 adcval = HAL_ADC_GetValue(&hadc1);
+	  	 }
+
+
+	  	  sprintf(buffer, "soi : %.1f temp : %.1f humid : %.1f  light : %.1f \r\n ",ADCpercent,temp,humid,adcval);
 	  	  HAL_UART_Transmit(&huart2, &buffer, strlen(buffer), HAL_MAX_DELAY);
 	  	  HAL_UART_Transmit(&huart1, &buffer, strlen(buffer), HAL_MAX_DELAY);
 	  	  HAL_Delay(1000);
